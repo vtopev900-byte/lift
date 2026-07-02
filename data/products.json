@@ -1,0 +1,7 @@
+[
+  {"name":"Daily","status":"next after Chat Log test","input":"Chat Event Log, P001 Daily Event Log, Daily Output Queue, Live Context"},
+  {"name":"Weekly","status":"blocked until daily stable","input":"Daily, Live Context, Trace, Learning, Decisions, errors"},
+  {"name":"Master Snapshot","status":"paused","input":"Weekly, Live Context, Source Map, Process Map, Route Map"},
+  {"name":"Navigation Cockpit","status":"MVP v0.1","input":"manual JSON updated by agent after Drive review"},
+  {"name":"Runtime Contract","status":"v01.1 draft candidate","input":"P-000 Session Boot and P-016 Fixation Control"}
+]
