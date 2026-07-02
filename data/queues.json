@@ -1,0 +1,8 @@
+[
+  {"name":"Chat Event Log","status":"active","watch":"open events, transfer queue, checkpoints, failures","priority":"P0"},
+  {"name":"P001 Daily Event Log","status":"active","watch":"promoted events for daily","priority":"P0"},
+  {"name":"Daily Output Queue","status":"active","watch":"READY blocks for daily","priority":"P0"},
+  {"name":"Trace Register","status":"later","watch":"external traces and evidence","priority":"P2"},
+  {"name":"Decision Candidates","status":"later","watch":"candidate versus accepted decisions","priority":"P2"},
+  {"name":"Learning Register","status":"later","watch":"system lessons from errors and corrections","priority":"P2"}
+]
