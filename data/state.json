@@ -1,0 +1,16 @@
+{
+  "last_updated": "2026-07-02",
+  "current_focus": "Stabilize new chat boot and Chat Event Log fixation",
+  "system_mode": "recovery_stabilization",
+  "active_route": ["P-000 Session Boot", "AGENT_RUNTIME_CONTRACT v01.1", "Chat Event Log", "P001 Daily Event Log", "Daily Output Queue", "Daily"],
+  "master_snapshot": "paused",
+  "write_mode": "hybrid_auto_log",
+  "health": "warning",
+  "open_p0": ["New chat must write boot event and checkpoint automatically"],
+  "rules": [
+    "No new Drive docs during stabilization",
+    "Do not touch PROTOCOL-000",
+    "Technical lower-contour events are auto-log",
+    "Source of truth changes require approval"
+  ]
+}
