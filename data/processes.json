@@ -1,0 +1,10 @@
+[
+  {"id":"P-000","name":"Session Boot / Agent Runtime Boot","status":"current P0","role":"Connects a new chat to the system, creates runtime-state, triggers checkpoint, writes lower-contour boot trace."},
+  {"id":"P-001","name":"Live Context Update","status":"after Chat Log stabilization","role":"Keeps current working context alive between snapshots."},
+  {"id":"P-002","name":"Weekly Field Report","status":"paused","role":"Builds weekly delta picture from daily, trace, learning, decisions and errors."},
+  {"id":"P-008","name":"System Assembly","status":"later","role":"Links Trace, Learning, Decisions, Source Map, Core and processes."},
+  {"id":"P-013","name":"Learning Capture","status":"later","role":"Turns errors and user corrections into reusable system learning."},
+  {"id":"P-014","name":"Route / Source Map Maintenance","status":"candidate only","role":"Keeps routing and source maps aligned with system reality."},
+  {"id":"P-015","name":"System Error Audit","status":"active for failures","role":"Audits route breaks, failed checkpoints and source conflicts."},
+  {"id":"P-016","name":"System Fixation Control","status":"linked to P-000","role":"Controls whether system writes match actual system state."}
+]
