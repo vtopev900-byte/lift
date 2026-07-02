@@ -1,0 +1,5 @@
+[
+  {"id":"F-2026-07-02-001","severity":"P0","status":"open","title":"Runtime checkpoint did not run in another chat","next":"Test runtime contract v01.1"},
+  {"id":"SYSTEM-COMPLEXITY-RESET","severity":"P0","status":"open","title":"System orientation is too hard for user","next":"Use cockpit as control panel"},
+  {"id":"MASTER-SNAPSHOT-PAUSED","severity":"P1","status":"active","title":"Master snapshot is paused","next":"Stabilize Chat Log and Daily Queue first"}
+]
