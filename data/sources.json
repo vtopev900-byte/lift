@@ -1,0 +1,9 @@
+[
+  {"name":"RV-001 / Routing View","role":"Agent entry point and P0 routing rules","look_for":"how a new agent enters the system"},
+  {"name":"Chat Event Log","role":"First event intake from chat","look_for":"chat events, transfer queue, failures, checkpoints"},
+  {"name":"P001 Daily Event Log","role":"Buffer before daily","look_for":"promoted events and Daily Output Queue"},
+  {"name":"Process Map","role":"Process registry","look_for":"process ownership, automation backlog, approval gates, open loops"},
+  {"name":"Source Map","role":"Source registry","look_for":"source of truth, current, draft, legacy"},
+  {"name":"Route Map","role":"Route registry","look_for":"what route to run for a detected event"},
+  {"name":"Live Context","role":"Current state layer","look_for":"current focus, constraints, active state"}
+]
