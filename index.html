@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project OS LIFT Cockpit</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <aside>
+    <h1>Project OS LIFT</h1>
+    <p>Пульт управления</p>
+    <nav>
+      <a href="#state">Состояние</a>
+      <a href="#route">Маршрут</a>
+      <a href="#queues">Очереди</a>
+      <a href="#errors">Ошибки</a>
+      <a href="#processes">Процессы</a>
+      <a href="#sources">Источники</a>
+      <a href="#commands">Команды</a>
+    </nav>
+  </aside>
+  <main>
+    <header>
+      <input id="search" placeholder="Поиск по пульту" />
+      <div id="updated"></div>
+    </header>
+    <section id="state" class="panel"><h2>Current State</h2><div id="stateCards" class="grid"></div></section>
+    <section id="route" class="panel"><h2>Active Route</h2><div id="routeFlow" class="flow"></div></section>
+    <section id="queues" class="panel"><h2>Queues</h2><div id="queuesList" class="grid"></div></section>
+    <section id="errors" class="panel"><h2>Errors / Alerts</h2><div id="errorsList" class="grid"></div></section>
+    <section id="processes" class="panel"><h2>Processes</h2><div id="processesList" class="grid"></div></section>
+    <section id="sources" class="panel"><h2>Source Links</h2><div id="sourcesList" class="grid"></div></section>
+    <section id="commands" class="panel"><h2>Command Buttons</h2><div id="commandsList" class="grid"></div></section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
