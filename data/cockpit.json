@@ -1,0 +1,63 @@
+{
+  "updated": "2026-07-03",
+  "mode": "recovery_stabilization",
+  "title": "Project OS LIFT Cockpit",
+  "subtitle": "Пульт возврата в проект после gap",
+  "design_driver": "Пользователь после gap теряет ориентацию. Cockpit должен вернуть его в рабочее состояние без лазания по 15 таблицам.",
+  "route": {
+    "id": "REBUILD_PROJECT_COCKPIT",
+    "status": "active_working_route",
+    "approval_status": "user_requested",
+    "reason": "user_adaptation_after_gap"
+  },
+  "return_flow": [
+    {"q":"Где я сейчас?","a":"Режим recovery_stabilization. Нижний контур фиксации стабилизируется. Master Snapshot paused."},
+    {"q":"Что изменилось?","a":"Runtime Contract v01.1 принят как draft/candidate. Chat Event Log уже фиксирует события, checkpoint и daily queue."},
+    {"q":"Что требует внимания?","a":"Проверить новый boot: runtime_state, session_boot, checkpoint и promoted event без ручного 'занеси'."},
+    {"q":"Что сделать дальше?","a":"Пересобрать cockpit как observability layer: health, P0/P1, queues, commands, route, source projection."},
+    {"q":"Где срезы?","a":"Срезы не отменяются. Это on-demand outputs внутри cockpit: daily, weekly, master, route, source, error, process."}
+  ],
+  "metrics": [
+    {"label":"Mode","value":"recovery_stabilization","status":"P1","note":"Система стабилизирует вход, фиксацию и human-facing cockpit."},
+    {"label":"Open P0","value":"3","status":"P0","note":"P-000 boot test, user adaptation gap, handoff format risk."},
+    {"label":"Last checkpoint","value":"CP-2026-07-02-001","status":"OK","note":"Checkpoint есть. Нужен тест автоматического boot checkpoint."},
+    {"label":"Chat events 02.07","value":"11","status":"OK","note":"CE-2026-07-02-001 ... CE-2026-07-02-011."},
+    {"label":"Daily queue ready","value":"3","status":"OK","note":"P000_RUNTIME_BOOT, PROJECT_COCKPIT, USER_ADAPTATION."},
+    {"label":"Master Snapshot","value":"paused","status":"P1","note":"Не запускать до стабилизации нижнего контура."}
+  ],
+  "attention": [
+    {"id":"P0-BOOT","level":"P0","title":"Проверить вход нового чата","body":"Новый агент должен сам создать runtime_state, session_boot и checkpoint, не ожидая команды 'занеси'.","next":"Manual boot test"},
+    {"id":"P0-ADAPT","level":"P0","title":"Адаптация пользователя после gap","body":"Cockpit нужен не как справочник, а как механизм возврата пользователя в действие.","next":"Start UI from user return flow"},
+    {"id":"P0-HANDOFF","level":"P0","title":"Риск handoff language","body":"Слова 'главное', 'критическое', 'стоп' могут стать ложными правилами для следующего агента.","next":"Controlled handoff format"},
+    {"id":"P1-PII","level":"P1","title":"Public repo privacy","body":"GitHub Pages публичный. Не выносить PII, токены, телефоны, приватные Drive links.","next":"Sanitized JSON only"}
+  ],
+  "commands": [
+    {"name":"Проверить lower contour","level":"P0","status":"active","steps":["01_СОБЫТИЯ_ЧАТА","07_КОНТРОЛЬ_ЧЕКПОИНТОВ","02_ОЧЕРЕДЬ_ПЕРЕНОСА","P001 Daily Queue"]},
+    {"name":"Создать срез","level":"P1","status":"candidate","steps":["выбрать тип","подтянуть источники","собрать output","зафиксировать событие"]},
+    {"name":"Собрать handoff","level":"P0","status":"candidate","steps":["state_change","evidence","impact","next_entry","scope","expiry","approval_status"]},
+    {"name":"Обновить cockpit","level":"P1","status":"manual","steps":["сверить Drive","обновить data/cockpit.json","проверить Pages","зафиксировать изменение"]}
+  ],
+  "snapshots": [
+    {"type":"daily","status":"available_candidate","input":"Chat Event Log + P001 Daily Output Queue"},
+    {"type":"weekly","status":"paused_until_daily_stable","input":"Daily + Trace + Learning + Decisions"},
+    {"type":"master","status":"paused","input":"Weekly + Live Context + Source/Process/Route Maps"},
+    {"type":"route","status":"candidate","input":"Route Map + checkpoint control"},
+    {"type":"source","status":"candidate","input":"Source Map + Entity Graph"},
+    {"type":"error","status":"candidate","input":"Errors + System Error Audit"},
+    {"type":"process","status":"candidate","input":"Process Map + open loops"}
+  ],
+  "sources": [
+    {"name":"RV-001","role":"entry routing","status":"active","note":"P0 route rules. Not enough without runtime execution layer."},
+    {"name":"AGENT_RUNTIME_CONTRACT v01.1","role":"runtime","status":"draft_candidate","note":"runtime_state, hybrid_auto_log, boot_write, checkpoint format."},
+    {"name":"Chat Event Log","role":"lower contour intake","status":"active","note":"events, transfer queue, errors, checkpoints."},
+    {"name":"P001 Daily Event Log","role":"daily buffer","status":"active","note":"promoted events and Daily Output Queue."},
+    {"name":"Entity Graph","role":"relationship map","status":"active","note":"entity links, gaps, loops, next actions. Not checkpoint log."},
+    {"name":"GitHub Pages Cockpit","role":"human interface","status":"rebuild_v0_2","note":"sanitized projection, no private data."}
+  ],
+  "scope": {
+    "status": "temporary",
+    "authority_level": "scope_for_current_rebuild_not_source_rule",
+    "expiry": "until user changes route or cockpit rebuild is complete",
+    "text": "Эти рамки не являются permanent rules. Они удерживают текущую работу от расползания во время rebuild cockpit."
+  }
+}
