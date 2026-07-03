@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "updated": "2026-07-03",
+    "title": "Project OS LIFT Admin Console",
+    "subtitle": "Операционная консоль управления Project_OS_LIFT",
+    "mode": "static_admin_console_v0_2",
+    "route": "ADMIN_CONSOLE_IMPLEMENTATION",
+    "status": "draft_candidate",
+    "visibility": "public_sanitized_projection",
+    "document_token": "DOC.ADMIN_CONSOLE.PRODUCT_FRAME.V01",
+    "object_id": "ADMIN_CONSOLE_PRODUCT_FRAME__Project_OS_LIFT__v0_1",
+    "source_frame": "Admin Console Product Frame v0.1",
+    "design_driver": "Вернуть пользователя в рабочее состояние после gap и дать безопасные команды управления системой без подмены source of truth."
+  },
+  "notice": {
+    "title": "Статическая версия админки",
+    "body": "GitHub Pages является лицом админки. Текущая версия показывает состояние, маршруты входа, команды, approval boundaries и copy-payloads. Реальное выполнение команд будет возможно только после execution layer: MCP, backend, Apps Script или GitHub Actions.",
+    "severity": "watch"
+  },
+  "entry_map": [
+    {"id":"ENTRY-OWNER","role":"Владелец / пользователь","open":"Owner Home","job":"Быстро понять состояние, что изменилось, что требует решения и что запускать дальше.","next":"State, Attention, Commands"},
+    {"id":"ENTRY-AGENT","role":"Агент","open":"Agent Runtime","job":"Понять active route, принятые контракты, write mode, checkpoint и границы действий.","next":"Runtime Test и Contract Ledger"},
+    {"id":"ENTRY-OPS","role":"Оператор системы","open":"Ops Console","job":"Проверить нижний контур: events, checkpoints, errors, transfer queue, daily queue.","next":"Проверить lower contour"},
+    {"id":"ENTRY-OUTPUT","role":"Сборщик output","open":"Snapshot Center","job":"Собрать daily, weekly, route, source, error или process snapshot как on-demand output.","next":"Выбрать тип среза"},
+    {"id":"ENTRY-INTEGRATOR","role":"Интегратор / разработчик","open":"Data Contract","job":"Понять JSON-модель, команды и будущий execution layer.","next":"Data Contract и Command Payloads"}
+  ],
+  "state": [
+    {"label":"Console status","value":"v0.2","tone":"watch","note":"Статическая админка поверх sanitized JSON. Не source of truth."},
+    {"label":"Active route","value":"ADMIN_CONSOLE_IMPLEMENTATION","tone":"ok","note":"После review PDF v0.1 начата реализация интерфейса."},
+    {"label":"Execution layer","value":"not connected","tone":"risk","note":"Кнопки пока копируют payload, но не пишут в Drive."},
+    {"label":"Artifact guard","value":"candidate","tone":"watch","note":"DOC_CARD_PREFLIGHT добавлен как будущий guard для документов."},
+    {"label":"Parallel agents","value":"candidate","tone":"watch","note":"Agent Session Registry нужен для 2-3 параллельных агентов."},
+    {"label":"Priority model","value":"noisy","tone":"risk","note":"P0 / P1 / P00 дублируются; нужна нормализация."}
+  ],
+  "attention": [
+    {"id":"A-EXEC","level":"P0","title":"Нет execution layer","body":"Статическая страница не может сама записывать в Google Sheets. Любая кнопка действия сейчас должна показывать или копировать командный payload.","next":"Выбрать MCP / Apps Script / backend / GitHub Actions."},
+    {"id":"A-BOOT","level":"P0","title":"Boot нового агента не доказан","body":"Нужно проверить, что новый чат сам создает runtime_state, session_boot, checkpoint и пишет нижний контур.","next":"Запустить manual boot test."},
+    {"id":"A-DOC","level":"P0","title":"Документный preflight","body":"Каждый PDF/DOCX/MD должен иметь document_token, object_id, anchor, status, visibility и approval boundary.","next":"Внести в AGENT_RUNTIME_CONTRACT v01.2."},
+    {"id":"A-AGENTS","level":"P0","title":"Параллельные агенты","body":"Нужен agent_run_id и журнал принятых контрактов, иначе при параллельной работе невозможно понять, кто что писал.","next":"Добавить Agent Session Registry после approval."},
+    {"id":"A-PRIORITY","level":"P1","title":"Шум приоритетов","body":"Слишком много P0/P1/P00 в разных слоях. Нужна единая модель priority / severity / status.","next":"Спроектировать priority taxonomy cleanup."}
+  ],
+  "commands": [
+    {"id":"CMD-LOWER-CONTOUR-CHECK","title":"Проверить lower contour","level":"P0","status":"manual_payload","description":"Проверить, что события, checkpoints, errors и transfer queue актуальны.","payload":{"command":"CHECK_LOWER_CONTOUR","read":["Chat Event Log / events","Chat Event Log / checkpoints","Chat Event Log / errors","Chat Event Log / transfer queue","P001 Daily Event Log / daily queue"],"output":"status summary + missing rows + next action","write_allowed":"lower_contour_only"}},
+    {"id":"CMD-AGENT-BOOT-TEST","title":"Проверить boot агента","level":"P0","status":"manual_payload","description":"Проверить, что новый агент не уходит в normal assistant mode.","payload":{"command":"RUN_AGENT_BOOT_TEST","required":["runtime_state_created","session_boot_written","checkpoint_written","accepted_contracts_logged","write_status_or_fallback"],"fail_if_missing":["agent_run_id","session_id","active_route","write_mode"],"output":"pass/fail + failed checkpoint row"}},
+    {"id":"CMD-CREATE-SNAPSHOT","title":"Создать срез","level":"P1","status":"candidate_payload","description":"Собрать выбранный snapshot как output, не как новый source of truth.","payload":{"command":"CREATE_SNAPSHOT","snapshot_type":"daily | weekly | master | route | source | error | process","requires_source_gates":true,"must_include":["orientation","evidence","state_lock","handoff"],"approval_needed_for":["master","source_of_truth_update","accepted_decision"]}},
+    {"id":"CMD-DOC-PREFLIGHT","title":"Проверить документ перед выдачей","level":"P0","status":"candidate_payload","description":"Guard против PDF/DOCX/MD без токена документа и approval boundary.","payload":{"command":"DOC_CARD_PREFLIGHT","required_fields":["anchor","document_token","object_id","title","type","version","date","status","visibility","approval_boundary","source_standard"],"block_release_if_missing":["document_token","approval_boundary","status"],"output":"preflight report"}},
+    {"id":"CMD-ACCEPT-CONTRACT","title":"Зафиксировать принятый контракт","level":"P1","status":"candidate_payload","description":"Записать, что конкретный agent_run принял контракт или patch.","payload":{"command":"CONTRACT_ACCEPTED","fields":["agent_run_id","contract_id","contract_version","scope","authority","accepted_by","timestamp"],"write_target":"Agent Session Registry / Contract Ledger","note":"Нужна новая вкладка после approval."}}
+  ],
+  "approval_center": [
+    {"scope":"AUTO","allowed":["chat event","checkpoint","failed checkpoint","system error row","transfer queue candidate","daily queue row if promoted"],"blocked":["source of truth update","accepted decision","architecture activation"]},
+    {"scope":"CANDIDATE","allowed":["route candidate","process candidate","source map candidate","contract patch candidate","priority cleanup candidate"],"blocked":["promote to active without approval"]},
+    {"scope":"APPROVAL","allowed":["accepted decision","active process change","source of truth change","architecture change","contract activation"],"blocked":["auto-write by agent"]}
+  ],
+  "runtime_test": [
+    {"check":"agent_run_id","expected":"unique per agent run","status":"candidate"},
+    {"check":"session_id","expected":"visible in every lower-contour row","status":"partial"},
+    {"check":"accepted_contracts","expected":"logged at boot and after each accepted patch","status":"missing"},
+    {"check":"runtime_state","expected":"write_mode + route + targets + approval boundary","status":"candidate"},
+    {"check":"checkpoint","expected":"written after route shift / artifact / error","status":"active_manual_test"},
+    {"check":"fallback","expected":"if write unavailable, produce write_failed candidate","status":"candidate"}
+  ],
+  "snapshots": [
+    {"type":"daily","owner":"P-001","status":"available","purpose":"Закрыть день и дать следующий вход."},
+    {"type":"weekly","owner":"P-002","status":"available_after_daily","purpose":"Показать дельту недели."},
+    {"type":"master","owner":"Master Field Snapshot","status":"paused","purpose":"Стабильная карта среды после проверки нижнего контура."},
+    {"type":"route","owner":"Route Map","status":"candidate","purpose":"Состояние маршрутов, агентов и route gaps."},
+    {"type":"source","owner":"Source Map / Entity Graph","status":"candidate","purpose":"Состояние источников, связей и разрывов."},
+    {"type":"error","owner":"Errors / Anti-examples","status":"candidate","purpose":"Ошибки, антипримеры, failed checkpoints."},
+    {"type":"process","owner":"Process Map","status":"candidate","purpose":"Open loops, rhythms, gates and stale work."}
+  ],
+  "data_contract": {
+    "public_projection_rules":["GitHub Pages показывает очищенную проекцию состояния.","Drive остается source / fixation layer.","Command payloads являются объектами инструкции, а не доказательством выполнения."],
+    "required_json_files":[{"file":"data/admin-console.json","purpose":"main UI state and commands"},{"file":"data/cockpit.json","purpose":"legacy cockpit state; keep until migration"}],
+    "future_tables":[{"name":"08_АГЕНТНЫЕ_СЕССИИ","status":"candidate","purpose":"agent_run_id, accepted contracts, routes, write mode and status"},{"name":"09_КОНТРАКТЫ_СЕССИИ","status":"candidate","purpose":"CONTRACT_ACCEPTED events per agent run"},{"name":"Priority Taxonomy","status":"candidate","purpose":"normalize priority / severity / status"}]
+  },
+  "not_forget": [
+    {"id":"NF-2026-07-03-001","title":"DOC_CARD_PREFLIGHT","body":"document_token mandatory for every PDF/DOCX/MD artifact","status":"open"},
+    {"id":"NF-2026-07-03-002","title":"AGENT_SESSION_REGISTRY","body":"track parallel agents, agent_run_id, accepted contracts and write targets","status":"open"},
+    {"id":"NF-2026-07-03-003","title":"DOC_CONTRACT_RETURN","body":"return to doc preflight and agent registry when creating document contract","status":"open"},
+    {"id":"NF-2026-07-03-004","title":"PRIORITY_LABEL_NOISE","body":"clean up duplicated P0/P1/P00 labels across layers","status":"open"}
+  ]
+}
