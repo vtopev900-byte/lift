@@ -3,25 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Project OS LIFT Admin Console</title>
+  <title>LIFT — пульт управления проектом</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <aside class="sidebar">
-    <div class="brand"><span>L</span><div><h1>Project OS LIFT</h1><p>admin console v0.2</p></div></div>
+    <div class="brand"><span>L</span><div><h1>LIFT</h1><p>пульт управления</p></div></div>
     <nav>
-      <a href="#owner">Owner Home</a>
-      <a href="#entry">Entry Map</a>
-      <a href="#state">State</a>
-      <a href="#attention">Attention</a>
-      <a href="#commands">Commands</a>
-      <a href="#approval">Approval</a>
-      <a href="#runtime">Runtime Test</a>
-      <a href="#snapshots">Snapshots</a>
-      <a href="#data">Data Contract</a>
+      <a href="#state">Состояние</a>
+      <a href="#navigation">Навигация</a>
+      <a href="#work">Работы</a>
+      <a href="#snapshots">Срезы</a>
+      <a href="#glossary">Словарь</a>
+      <a href="#technical">Техническое</a>
     </nav>
     <div class="sidebox">
-      <small>route</small>
+      <small>маршрут</small>
       <strong id="sideRoute">loading</strong>
       <p id="sideStatus"></p>
     </div>
@@ -30,74 +27,55 @@
   <main>
     <header class="topbar">
       <div>
-        <p class="eyebrow">human-facing admin layer</p>
-        <h2 id="title">Project OS LIFT Admin Console</h2>
+        <p class="eyebrow">Project_OS_LIFT</p>
+        <h2 id="title">LIFT</h2>
         <p id="subtitle"></p>
       </div>
       <div class="topright">
-        <input id="search" placeholder="Поиск по админке" />
+        <input id="search" placeholder="Поиск по пульту" />
         <span id="updated" class="pill">loading</span>
       </div>
     </header>
 
-    <section id="owner" class="hero">
+    <section id="state" class="hero">
       <div>
-        <span id="mode" class="badge warn">loading</span>
-        <h2>Пульт управления системой</h2>
-        <p id="driver"></p>
-        <div id="notice" class="notice"></div>
+        <span id="version" class="badge warn">v0.3</span>
+        <h2>Состояние проекта</h2>
+        <p id="mainLine"></p>
       </div>
-      <div id="ownerFlow" class="flowgrid"></div>
+      <div id="orientation" class="flowgrid"></div>
     </section>
 
-    <section id="entry" class="panel">
-      <div class="panelhead"><div><p class="eyebrow">entry map</p><h2>Кто куда входит</h2></div><button id="copyBrief">Скопировать brief</button></div>
-      <div id="entryMap" class="cards"></div>
+    <section id="navigation" class="panel">
+      <div class="panelhead">
+        <div><p class="eyebrow">навигация по системе</p><h2>Куда перейти и зачем</h2></div>
+        <button id="copyBrief">Скопировать краткое состояние</button>
+      </div>
+      <div id="navigationList" class="cards"></div>
     </section>
 
-    <section id="state" class="panel">
-      <p class="eyebrow">system state</p>
-      <h2>Состояние</h2>
-      <div id="stateGrid" class="metrics"></div>
-    </section>
-
-    <section id="attention" class="panel">
-      <p class="eyebrow">attention</p>
-      <h2>Что требует внимания</h2>
-      <div id="attentionList" class="cards"></div>
-    </section>
-
-    <section id="commands" class="panel">
-      <p class="eyebrow">command center</p>
-      <h2>Команды</h2>
-      <p class="sectionnote">Это command payloads. Пока нет execution layer, кнопки копируют команду, но не выполняют запись в Drive.</p>
-      <div id="commandsList" class="commandgrid"></div>
-    </section>
-
-    <section id="approval" class="panel">
-      <p class="eyebrow">approval center</p>
-      <h2>Границы действий</h2>
-      <div id="approvalList" class="cards"></div>
-    </section>
-
-    <section id="runtime" class="panel">
-      <p class="eyebrow">agent runtime</p>
-      <h2>Runtime Test</h2>
-      <div id="runtimeList" class="checklist"></div>
+    <section id="work" class="panel">
+      <p class="eyebrow">работы</p>
+      <h2>Что делаем сейчас и дальше</h2>
+      <div id="workList" class="split"></div>
     </section>
 
     <section id="snapshots" class="panel">
-      <p class="eyebrow">snapshot center</p>
-      <h2>Срезы как output</h2>
+      <p class="eyebrow">срезы</p>
+      <h2>Готовые выходы по кнопке</h2>
       <div id="snapshotList" class="cards"></div>
     </section>
 
-    <section id="data" class="panel">
-      <p class="eyebrow">data contract</p>
-      <h2>Данные и будущие слои</h2>
-      <div id="dataContract" class="split"></div>
-      <h3>Не забыть</h3>
-      <div id="notForget" class="cards compact"></div>
+    <section id="glossary" class="panel">
+      <p class="eyebrow">словарь для ИИ и контрактов</p>
+      <h2>Русский смысл → системный ID</h2>
+      <div id="glossaryList" class="cards compact"></div>
+    </section>
+
+    <section id="technical" class="panel">
+      <p class="eyebrow">служебный слой</p>
+      <h2>Не забыть</h2>
+      <div id="technicalList" class="cards"></div>
     </section>
   </main>
 
