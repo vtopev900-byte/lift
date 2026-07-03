@@ -1,30 +1,73 @@
 # Project OS LIFT / Human Navigation
 
-## 3 слоя
+## Status
 
-1. Навигация: где что искать и какой маршрут запускать.
-2. Фиксация: что произошло и куда это записано.
-3. Продукты: daily, weekly, master snapshot и другие выходы.
+Working note for cockpit. Not source of truth.
 
-## Навигация
+## Three layers
 
-- PROTOCOL-000: верхний guardrail.
-- RV-001: точка входа агента.
-- Live Context: текущий режим и активный фокус.
-- Source Map: карта источников.
-- Process Map: реестр процессов.
-- Route Map: карта маршрутов.
+```text
+1. Source / fixation layer
+   Drive docs, sheets, logs, queues, route/process/source maps.
 
-## Фиксация
+2. Execution layer
+   Runtime Contract, event routing, checkpoint rules, write permission.
 
-- Chat Event Log: первый входящий лог событий чата.
-- P001 Daily Event Log: буфер перед daily.
-- Daily Output Queue: готовые блоки для daily.
-- System Error Audit: ошибки, failed checkpoint, route break.
-- Trace Register: следы и доказательства.
-- Decision Log: решения и кандидаты решений.
-- Learning Register: системные выводы.
+3. Human cockpit layer
+   GitHub Pages interface for returning to action after a context gap.
+```
 
-## Текущий фокус
+## Cockpit job
 
-Стабилизировать Chat Event Log и вход нового чата. Master Snapshot не делать до стабилизации нижнего контура.
+Cockpit is not a replacement for Drive and not a replacement for snapshots.
+
+It answers:
+
+1. Where am I now?
+2. What changed?
+3. What requires attention?
+4. What is the next route?
+5. What can I generate as output?
+
+## Snapshot correction
+
+Snapshots remain on-demand outputs inside cockpit.
+
+Available snapshot commands should include:
+
+- daily;
+- weekly;
+- master;
+- route snapshot;
+- source snapshot;
+- error snapshot;
+- process snapshot.
+
+## Language guard
+
+Do not use handoff/daily words that accidentally become source rules:
+
+```text
+avoid:
+- главное
+- критическое
+- стоп-условие
+- правило
+- вывод дня
+
+prefer:
+- state_change
+- evidence
+- impact
+- next_entry
+- scope
+- expiry
+- approval_status
+```
+
+## Current design driver
+
+```text
+User loses orientation after gap.
+Cockpit must return user to action.
+```
