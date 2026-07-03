@@ -7,31 +7,35 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <aside>
-    <h1>Project OS LIFT</h1>
-    <p>Пульт управления</p>
+  <aside class="sidebar">
+    <div class="brand"><span>L</span><div><h1>Project OS LIFT</h1><p>observability cockpit</p></div></div>
     <nav>
-      <a href="#state">Состояние</a>
-      <a href="#route">Маршрут</a>
-      <a href="#queues">Очереди</a>
-      <a href="#errors">Ошибки</a>
-      <a href="#processes">Процессы</a>
-      <a href="#sources">Источники</a>
-      <a href="#commands">Команды</a>
+      <a href="#return">Вернуться</a>
+      <a href="#health">Health</a>
+      <a href="#attention">P0 / P1</a>
+      <a href="#commands">Commands</a>
+      <a href="#snapshots">Срезы</a>
+      <a href="#sources">Sources</a>
     </nav>
+    <div class="sidebox"><small>mode</small><strong id="sideMode">loading</strong><p id="sideRoute"></p></div>
   </aside>
+
   <main>
-    <header>
-      <input id="search" placeholder="Поиск по пульту" />
-      <div id="updated"></div>
+    <header class="topbar">
+      <div><p class="eyebrow">human-facing layer</p><h2 id="title">Project OS LIFT Cockpit</h2><p id="subtitle"></p></div>
+      <div class="topright"><input id="search" placeholder="Поиск по пульту" /><span id="updated" class="pill">loading</span></div>
     </header>
-    <section id="state" class="panel"><h2>Current State</h2><div id="stateCards" class="grid"></div></section>
-    <section id="route" class="panel"><h2>Active Route</h2><div id="routeFlow" class="flow"></div></section>
-    <section id="queues" class="panel"><h2>Queues</h2><div id="queuesList" class="grid"></div></section>
-    <section id="errors" class="panel"><h2>Errors / Alerts</h2><div id="errorsList" class="grid"></div></section>
-    <section id="processes" class="panel"><h2>Processes</h2><div id="processesList" class="grid"></div></section>
-    <section id="sources" class="panel"><h2>Source Links</h2><div id="sourcesList" class="grid"></div></section>
-    <section id="commands" class="panel"><h2>Command Buttons</h2><div id="commandsList" class="grid"></div></section>
+
+    <section id="return" class="hero">
+      <div><span id="mode" class="badge warn">recovery</span><h2>Где я сейчас?</h2><p id="driver"></p></div>
+      <div id="returnFlow" class="flowgrid"></div>
+    </section>
+
+    <section id="health" class="panel"><div class="panelhead"><div><p class="eyebrow">observability</p><h2>Состояние</h2></div><button id="copyStatus">Скопировать статус</button></div><div id="metrics" class="metrics"></div></section>
+    <section id="attention" class="panel"><p class="eyebrow">attention</p><h2>Что требует внимания</h2><div id="attentionList" class="cards"></div></section>
+    <section id="commands" class="panel"><p class="eyebrow">command center</p><h2>Команды</h2><div id="commandsList" class="cards"></div></section>
+    <section id="snapshots" class="panel"><p class="eyebrow">outputs</p><h2>Срезы как кнопки</h2><div id="snapshotsList" class="cards"></div></section>
+    <section id="sources" class="panel"><p class="eyebrow">source projection</p><h2>Источники</h2><div id="sourcesList" class="cards"></div><div id="scope" class="scope"></div></section>
   </main>
   <script src="app.js"></script>
 </body>
