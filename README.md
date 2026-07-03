@@ -1,71 +1,56 @@
-# Project OS LIFT Admin Console
+# LIFT — пульт управления проектом
 
-Human-facing admin console for `Project_OS_LIFT`.
-
-Pages URL:
+GitHub Pages:
 
 ```text
 https://vtopev900-byte.github.io/lift/
 ```
 
-## Purpose
+## Назначение
 
-This repository is not the source of truth for the system.
+Пульт нужен не только для возвращения после gap. Главная функция — управляемость Project_OS_LIFT.
 
-It is a public sanitized interface layer for returning the user to action after a context gap and preparing safe system commands.
+Пульт собирает в одном месте:
 
-The console answers:
+1. состояние проекта;
+2. главный ориентир;
+3. было / стало;
+4. текущие и будущие работы;
+5. навигацию по ключевым слоям;
+6. срезы;
+7. словарь для связи русского интерфейса с системными ID.
 
-1. Where am I now?
-2. What changed since last entry?
-3. What requires attention?
-4. Which command payload can be copied?
-5. Which snapshot can be generated?
-6. What needs approval before any system change?
-
-## Source model
-
-```text
-Drive tables/docs = source / fixation layer
-GitHub Pages = human-facing admin console
-data/admin-console.json = main sanitized state projection
-data/cockpit.json = legacy cockpit state kept until migration
-```
-
-Do not place private operational details into public repo data.
-
-## Main files
-
-- `index.html` — admin console shell.
-- `styles.css` — visual layer.
-- `app.js` — renderer for `data/admin-console.json`.
-- `data/admin-console.json` — current console state, command payloads and public projection.
-- `data/cockpit.json` — legacy cockpit projection.
-- `docs/*.md` — human-readable operating notes.
-
-## Current route
+## Текущая рамка v0.3
 
 ```text
-ADMIN_CONSOLE_IMPLEMENTATION
+owner-first
+русский интерфейс
+навигация вместо технической каши
+управляемость вместо набора экранов
 ```
 
-Current design driver:
+## Модель слоев
 
 ```text
-User loses orientation after gap.
-Admin Console must return the user to action and make safe commands visible.
-Snapshots remain on-demand outputs inside the console.
+Drive = источники и фиксация
+GitHub Pages = пульт владельца
+Пульт = состояние + навигация + работы + быстрый вход
 ```
 
-## Current status
+## Главное ограничение текущей версии
 
-- Admin Console v0.2 is static.
-- Command buttons copy payloads; they do not execute Drive writes.
-- Runtime Contract v01.1 is still draft/candidate.
-- Next proof: connect or choose an execution layer and test Agent Session Boot.
+Быстрые ссылки на Drive-объекты пока не вынесены в публичную страницу. Для рабочей навигации нужен безопасный вариант внутренних ссылок.
 
-## Known candidate fixes
+## Текущий маршрут
 
-- `DOC_CARD_PREFLIGHT`: every system artifact must have a document token and approval boundary.
-- `AGENT_SESSION_REGISTRY`: parallel agents need agent run identity and accepted contract tracking.
-- `PRIORITY_LABEL_NOISE`: normalize P0 / P1 / P00 labels across layers.
+```text
+ADMIN_CONSOLE_OWNER_NAVIGATION_REFRAME
+```
+
+## Следующие работы
+
+- Добавить безопасные внутренние ссылки на ключевые Drive-объекты.
+- Доработать навигацию: назначение, статус, текущие работы, будущие работы, влияние.
+- Собрать словарь: русский термин → system ID.
+- Упростить язык технических блоков.
+- Нормализовать P0 / P1 / P00.
