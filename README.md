@@ -1,15 +1,60 @@
 # Project OS LIFT Cockpit
 
-Static control panel for Project_OS_LIFT.
+Human-facing observability cockpit for `Project_OS_LIFT`.
 
-Main files:
+Pages URL:
 
-- `index.html` — cockpit screen.
-- `styles.css` — visual layer.
-- `app.js` — data loading and search.
-- `data/*.json` — current manual state.
-- `docs/*.md` — human-readable docs.
+```text
+https://vtopev900-byte.github.io/lift/
+```
 
-Current focus: stabilize P-000 Agent Runtime Boot and Chat Event Log.
+## Purpose
 
-GitHub Pages can serve this repository from branch `main` and folder `/root`.
+This repository is not the source of truth for the system.
+
+It is a public, sanitized cockpit layer that helps the user return to the project after a context gap:
+
+1. Where am I now?
+2. What changed since last entry?
+3. What requires attention?
+4. What can I do with one command?
+5. Which snapshot can I generate?
+
+## Source model
+
+```text
+Drive tables/docs = source / fixation layer
+GitHub Pages = human-facing cockpit
+data/cockpit.json = sanitized projection for UI
+```
+
+Do not place PII, access tokens, phone numbers, private Drive links, or private operational details into public repo data.
+
+## Main files
+
+- `index.html` — cockpit shell.
+- `styles.css` — dashboard visual layer.
+- `app.js` — renderer for `data/cockpit.json`.
+- `data/cockpit.json` — current sanitized cockpit state.
+- `docs/*.md` — human-readable operating notes.
+
+## Current route
+
+```text
+REBUILD_PROJECT_COCKPIT
+```
+
+Current design driver:
+
+```text
+User loses orientation after gap.
+Cockpit must return user to action.
+Snapshots remain on-demand outputs inside cockpit.
+```
+
+## Current status
+
+- Runtime Contract v01.1 is draft/candidate.
+- Lower contour event fixation is being stabilized.
+- Master Snapshot is paused.
+- Next proof: a new chat must create runtime_state, session_boot and checkpoint without waiting for "занеси".
